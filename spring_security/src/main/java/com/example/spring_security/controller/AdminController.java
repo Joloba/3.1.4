@@ -17,10 +17,13 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final PasswordEncoder encoder;
 
-    public AdminController(UserService userService, RoleService roleService) {
+
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.encoder = encoder;
     }
 
     @GetMapping("/users")
@@ -54,6 +57,7 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("roles", roleService.getAllRole());
 
+        user.setPassword(encoder.encode(user.getPassword()));
         user.setRolesList(role);
         userService.saveUser(user);
         return "redirect:/admin/users";
