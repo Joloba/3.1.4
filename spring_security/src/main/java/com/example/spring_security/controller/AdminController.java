@@ -4,13 +4,13 @@ import com.example.spring_security.model.Role;
 import com.example.spring_security.service.RoleService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import com.example.spring_security.model.User;
 import com.example.spring_security.service.UserService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
@@ -21,7 +21,6 @@ public class AdminController {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
-
     public AdminController(UserService userService, RoleService roleService, PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;
@@ -30,8 +29,6 @@ public class AdminController {
 
     @GetMapping("/users")
     public String showUsers(Model model, Principal principal) {
-        User user = userService.getUserByUserName(principal.getName());
-        model.addAttribute("user", user);
         User admin = userService.getUserByUserName(principal.getName());
         model.addAttribute("adminEmail", admin.getEmail());
         model.addAttribute("adminRoles", admin.getRoleName());
@@ -49,18 +46,22 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user") User user, Principal principal, Model model, @RequestParam(value = "role_id") long roleId) {
+    public String createUser(@ModelAttribute("user") User user, Principal principal, BindingResult bindingResult, Model model, @RequestParam(value = "role_id") long roleId) {
 
         User admin = userService.getUserByUserName(principal.getName());
-        Role role = roleService.getRole(roleId);
 
-        model.addAttribute("adminUsername", admin.getUsername());
+        model.addAttribute("adminEmail", admin.getEmail());
         model.addAttribute("adminRoles", admin.getRoleName());
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("roles", roleService.getAllRole());
 
+        if (userService.getUserByUserName(user.getEmail()) != null) {
+            bindingResult.addError(new FieldError("email", "email",
+                    String.format("User with email \"%s\" is already exist!", user.getEmail())));
+            System.err.println("ОШИБКА ТАКОЙ ПОЛЬЗОВАТЕЛЬ УЖЕ ЕСТЬ");
+            return "users/edit";
+        }
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRolesList(role);
         userService.saveUser(user);
         return "redirect:/admin/users";
     }
