@@ -72,7 +72,6 @@ public class AdminController {
         user.setPassword(encoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin/users";
-        return "redirect:/admin/users";
     }
 
     @GetMapping("/users/{id}")
