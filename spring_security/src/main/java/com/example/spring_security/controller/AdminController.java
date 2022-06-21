@@ -4,11 +4,13 @@ import com.example.spring_security.model.Role;
 import com.example.spring_security.service.RoleService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.spring_security.model.User;
 import com.example.spring_security.service.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @Controller
