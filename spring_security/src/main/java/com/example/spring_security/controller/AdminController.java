@@ -46,7 +46,7 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public String createUser(@ModelAttribute("user") User user, Principal principal, BindingResult bindingResult, Model model, @RequestParam(value = "role_id") long roleId) {
+    public String createUser(@ModelAttribute("user") User user, Principal principal, BindingResult bindingResult, Model model, @RequestParam(value = "role_id") String roleId) {
 
         User admin = userService.getUserByUserName(principal.getName());
 
@@ -61,8 +61,17 @@ public class AdminController {
             System.err.println("ОШИБКА ТАКОЙ ПОЛЬЗОВАТЕЛЬ УЖЕ ЕСТЬ");
             return "users/edit";
         }
+
+        System.err.println("РОЛЬ: " + roleId);
+        String[] roles = roleId.split(",");
+        for (String s: roles) {
+            long idRole = Long.parseLong(s);
+            Role role = roleService.getRole(idRole);
+            user.setRolesList(role);
+        }
         user.setPassword(encoder.encode(user.getPassword()));
         userService.saveUser(user);
+        return "redirect:/admin/users";
         return "redirect:/admin/users";
     }
 
