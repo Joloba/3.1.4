@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import java.util.List;
 import java.util.Set;
 
-@Transactional
 @Service
 public class RoleService {
 
@@ -31,6 +30,7 @@ public class RoleService {
         return roleDAO.getRole(roleId);
     }
 
+    @Transactional
     public void addRole(Role role) {
         roleDAO.addRole(role);
     }

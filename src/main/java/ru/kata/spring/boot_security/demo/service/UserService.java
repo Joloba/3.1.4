@@ -9,7 +9,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import java.util.List;
 import java.util.Set;
 
-@Transactional
+
 @Service
 public class UserService {
 
@@ -27,14 +27,17 @@ public class UserService {
         return userDAO.getUserById(id);
     }
 
+    @Transactional
     public void saveUser(User user) {
         userDAO.saveUser(user);
     }
 
+    @Transactional
     public void editUser(User user) {
         userDAO.editUser(user);
     }
 
+    @Transactional
     public void deleteUser(long id) {
         userDAO.deleteUser(id);
     }
