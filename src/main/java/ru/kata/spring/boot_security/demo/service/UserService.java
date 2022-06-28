@@ -7,6 +7,7 @@ import ru.kata.spring.boot_security.demo.dao.UserDAO;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -14,12 +15,11 @@ public class UserService {
 
     private final UserDAO userDAO;
 
-    @Autowired
     public UserService(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
-    public List<User> getAllUser() {
+    public Set<User> getAllUser() {
         return userDAO.getAllUser();
     }
 

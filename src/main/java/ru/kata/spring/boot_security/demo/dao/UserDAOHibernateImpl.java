@@ -1,13 +1,14 @@
 package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class UserDAOHibernateImpl implements UserDAO {
@@ -16,8 +17,10 @@ public class UserDAOHibernateImpl implements UserDAO {
     private EntityManager entityManager;
 
     @Override
-    public List<User> getAllUser() {
-        return entityManager.createQuery("select u from User u", User.class).getResultList();
+    public Set<User> getAllUser() {
+        List<User> userList = entityManager.createQuery("select u from User u", User.class).getResultList();
+        Set<User> userSet = new HashSet<>(userList);
+        return userSet;
     }
 
     @Override

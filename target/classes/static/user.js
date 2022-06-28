@@ -11,7 +11,7 @@ fetch(url)
                 <td>${user.lastName}</td>
                 <td>${user.age}</td>
                 <td>${user.email}</td>
-                <td>${user.roleName}</td> 
+                <td>${user.roles}</td> 
                 </tr>
                 `
                 document.getElementById('oneUser').innerHTML = userInput

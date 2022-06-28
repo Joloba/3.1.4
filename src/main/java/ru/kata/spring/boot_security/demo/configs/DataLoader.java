@@ -17,7 +17,6 @@ public class DataLoader implements ApplicationRunner {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
-    @Autowired
     public DataLoader(UserService userService, RoleService roleService, PasswordEncoder encoder) {
         this.userService = userService;
         this.roleService = roleService;

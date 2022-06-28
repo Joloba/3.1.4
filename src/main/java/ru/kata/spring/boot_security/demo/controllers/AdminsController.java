@@ -29,6 +29,6 @@ public class AdminsController {
         model.addAttribute("user", user);
         model.addAttribute("users", userService.getAllUser());
         model.addAttribute("roles", roleService.getAllRole());
-        return "/all";
+        return "admin";
     }
 }

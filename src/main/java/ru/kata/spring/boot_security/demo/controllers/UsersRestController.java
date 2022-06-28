@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
@@ -23,7 +25,7 @@ public class UsersRestController {
     }
 
     @GetMapping
-    public User user(Principal principal) {
-        return userService.getUserByUsername(principal.getName());
+    public ResponseEntity <User> user(Principal principal) {
+        return new ResponseEntity <> (userService.getUserByUsername(principal.getName()), HttpStatus.OK);
     }
 }

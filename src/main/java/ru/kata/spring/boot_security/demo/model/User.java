@@ -6,9 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -39,7 +37,7 @@ public class User implements UserDetails {
     private Byte age;
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public User(String email, String password, String name, String lastName, Byte age) {
         this.email = email;
@@ -47,11 +45,11 @@ public class User implements UserDetails {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
-        this.roles = new ArrayList<>();
+        this.roles = new HashSet<>();
     }
 
     public User() {
-        this.roles = new ArrayList<>();
+        this.roles = new HashSet<>();
     }
 
     public Long getId() {
@@ -94,26 +92,25 @@ public class User implements UserDetails {
         return age;
     }
 
+    public String getRoleName() {
+        StringBuilder result = new StringBuilder();
+        Set<Role> list = getRoles();
+        for (Role role: list) {
+            result.append(role.getName().replace("ROLE_", " ")).append(" ");
+        }
+        return result.toString();
+    }
+
     public void setAge(Byte age) {
         this.age = age;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRole(Role role) {
         roles.add(role);
-    }
-
-//    @JsonIgnore
-    public String getRoleName() {
-        StringBuilder result = new StringBuilder();
-        List<Role> list = getRoles();
-        for (Role role: list) {
-            result.append(role.getName().replace("ROLE_", " ")).append(" ");
-        }
-        return result.toString();
     }
 
     @JsonIgnore

@@ -7,6 +7,7 @@ import ru.kata.spring.boot_security.demo.dao.RoleDAO;
 import ru.kata.spring.boot_security.demo.model.Role;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Service
@@ -14,7 +15,6 @@ public class RoleService {
 
     private final RoleDAO roleDAO;
 
-    @Autowired
     public RoleService(RoleDAO roleDAO) {
         this.roleDAO = roleDAO;
     }
@@ -23,7 +23,7 @@ public class RoleService {
         return roleDAO.getRole(userRole);
     }
 
-    public List<Role> getAllRole() {
+    public Set<Role> getAllRole() {
         return roleDAO.getAllRole();
     }
 
